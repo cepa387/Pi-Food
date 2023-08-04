@@ -1,0 +1,27 @@
+.formcontainer {
+  width: 400px;
+  padding: 40px;
+  background-color: rgb(137, 143, 163);
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  margin: auto;
+}
+
+
+.formcontainer input {
+  width: 100%;
+  padding: 7px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.formcontainer input[type="checkbox"] {
+  margin-right: 5px;
+  background-color: red;
+}
+
+.formcontainercolumn {
+	display: flexbox;
+	gap: 0px;
+	text-align: justify;
+  }

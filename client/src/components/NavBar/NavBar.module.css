@@ -1,0 +1,22 @@
+.navega {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border-radius: 15px;
+    border: 1px solid black;
+    top: 0;
+    width: 100%;
+    background-color: rgb(137, 143, 163);
+    padding: 5px;
+    z-index: 9999;
+    position: relative;
+  }
+  
+  .navega input {
+    margin-right: 10px;
+  }
+  
+  .navega button {
+    margin-left: 10px;
+  }
+  

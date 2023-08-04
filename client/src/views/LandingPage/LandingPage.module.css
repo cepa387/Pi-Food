@@ -1,0 +1,83 @@
+
+.background {
+    height: 100vh;
+    background: url("./Fried-eggs.jpeg");
+    background-size: cover;
+    background-size: contain;
+    /* background-repeat: no-repeat; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    
+}
+
+.img {
+  width: 200px; /* Ancho deseado */
+  height: auto; /* Altura ajustada automáticamente */
+}
+
+.title {
+    align-items: center;
+    align-content: center;
+    margin-bottom: 250px;
+    height: 20vh;
+}
+
+.title h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 350%;
+    color: #e01d1d;
+    /* f9f3f4 */ 
+}
+
+.title button {
+  font-family: 'Poppins', sans-serif;
+    color: white;
+    font-size: 200%;
+    border: solid 1px white;
+    border-radius:20px;
+    background:none;
+}
+
+.title button:hover {
+  cursor: pointer;
+  font-size: 115%;
+  transform-origin: center;
+  text-shadow: 0 0 5px #fff,
+};
+
+.text {
+  font-size:28px;
+  font-family:helvetica;
+}
+.parpadea {
+  
+  animation-name: parpadeo;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+
+  -webkit-animation-name:parpadeo;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+} 
+
+ @-moz-keyframes parpadeo{  
+  0% { opacity: 1.0; }
+  50% { opacity: 0.0; }
+  100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes parpadeo {  
+  0% { opacity: 1.0; }
+  50% { opacity: 0.0; }
+   100% { opacity: 1.0; }
+}
+
+@keyframes parpadeo {  
+  0% { opacity: 1.0; }
+   50% { opacity: 0.0; }
+  100% { opacity: 1.0; }
+}

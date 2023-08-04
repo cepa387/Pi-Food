@@ -1,0 +1,49 @@
+.card {
+  width: 250px;
+  height: auto;
+  position: relative;
+  background-color: rgb(168, 188, 188);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+
+  flex-shrink: 0;
+  min-height: 250px;
+  overflow: hidden;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: bold;
+  /* Agregar las siguientes propiedades para manejar el desbordamiento */
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align:"center";
+  font-weight:600;
+  font-size:16;
+}
+
+.description {
+  font-size: 14px;
+  /* Agregar las siguientes propiedades para manejar el desbordamiento */
+  overflow: hidden;
+  text-align:"center";
+  font-weight:100;
+  font-size:14;
+}
+
+
+.img {
+  width: 150px;
+  /* margin-bottom: 10px; */
+  height: 150px;
+  border-radius: 5%;
+  background-position: center center;
+  box-shadow: 10px 5px 5px rgba(39, 9, 9, 0.462);
+ 
+  flex-shrink: 0;
+}
