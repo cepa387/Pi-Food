@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom/"
 import style from "./NavBar.module.css"
+import {useState } from "react";
+import { useDispatch} from "react-redux";
 
 
 const NavBar = () => {

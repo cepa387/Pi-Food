@@ -14,7 +14,7 @@ const router = Router();
 router.get('/diets', getDiets);
 router.get('/recipes', BusRecipes);
 router.get('/recipes/:idRecipe', Recipesid);
-router.get('/recipes/name?=', RecipesName);
+router.get('/recipes/name', RecipesName);
 router.post('/recipes', CreaRecipes)
 
 

@@ -11,7 +11,7 @@ export default function CardContainer({ recipes }) {
     <div className={style.container}>
       {recipes.map((data) => (
         <Card key={data.id} data={data} /> // Agregar la propiedad "key" con un valor único, en este caso, asumo que "data.id" es único para cada receta.
-      ))}
+      ))} 
     </div>
   );
 }

@@ -16,7 +16,7 @@ function App() {
       </Route>
 
       <Route path="/home">
-        <NavBar /><br /><br />
+        <NavBar />
         <Home />
       </Route>
 

@@ -21,7 +21,7 @@ async function BusRecipes  (req, res) {
               healthScore: recipe.healthScore,
               steps: instructions,
               diets,
-              api: true
+              source: "Api",
             }
         });
         
@@ -39,7 +39,7 @@ async function BusRecipes  (req, res) {
               healthScore: recipe.healthScore,
               steps: recipe.steps,
               diets,
-              db: true
+              source: "Created",
             }
         });
         
