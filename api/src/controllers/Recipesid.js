@@ -6,7 +6,7 @@ const { API_KEY, URL } = process.env;
 
 const Recipesid = async (req, res) => {
     const { idRecipe } = req.params;
-    
+
     try {
 
         let dbgame;
@@ -21,9 +21,9 @@ const Recipesid = async (req, res) => {
             const response = await axios.get(`${URL}/recipes/${idRecipe}/information?apiKey=${API_KEY}`);
             const filteredRecipe = response.data; // Actualiza aquí para obtener directamente los datos de la respuesta.
             const deleteTags = filteredRecipe.summary.replace(/<[^>]*>/g, '');
-            const stepByStep = filteredRecipe.analyzedInstructions[0].steps.map(step => step.step); // Actualiza aquí también.
-
-
+            const stepByStep = filteredRecipe.analyzedInstructions.length > 0
+                ? filteredRecipe.analyzedInstructions[0].steps.map(step => step.step)
+                : ["Esta receta no trae información Steps de la Api"];
             const associatedDiet = {
                 id: filteredRecipe.id,
                 name: filteredRecipe.title,

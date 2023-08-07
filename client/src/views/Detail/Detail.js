@@ -10,27 +10,21 @@ function RecipeDetail() {
     const dispatch = useDispatch();
     const recipe = useSelector((state) => state.recipeid); //ojo !
     
-    console.log("ID:::::", id)
-    console.log("jajaja:", recipe)
-
+    console.log("ESTE ID::",id)
+    console.log("RECETAS:", recipe)
     useEffect(() => {
         dispatch(idRecipe(id));
     }, [dispatch, id]);
 
-
-
     return (
         <div >
-
             <div >
-
                 <p><strong>Id:</strong>  {recipe.id}</p>
                 <p><strong>Nombre:</strong> {recipe.name}</p>
 
                 <p>{recipe.hasOwnProperty("background_image") ?
-                    (<img src={recipe.image}  alt="not found" />) :
-                    (<img src={recipe.image}  alt="not found" />)}</p>
-
+                    (<img src={recipe.image} alt="not found" />) :
+                    (<img src={recipe.image} alt="not found" />)}</p>
 
                 <div >
                     <p><strong> summary:</strong>{recipe.summary}</p>

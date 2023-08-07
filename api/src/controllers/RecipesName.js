@@ -1,69 +1,52 @@
 require('dotenv').config();
 const axios = require("axios");
-const Sequelize = require('sequelize');
-const {Recipe, Diets} = require("../db");
-const {API_KEY, URL} = process.env;
+const { API_KEY } = process.env;
+const { Recipe, Diets } = require('../db.js');
 
-
-const RecipesName = async (req, res) => {
-
+async function recipesName(req, res) {
     try {
-        const {name} = req.query;
+        const { name } = req.query;
+        console.log(`Esto sale ${name}`);
 
-        if(!name){
-            return res.status(400).send(`Parametro incorrecto`)
+        let reciDB = await Recipe.findAll({
+            include: {
+                model: Diets,
+                attributes: ['name'],
+                through: { attributes: [] }
+            }
+        });
+
+        if (reciDB) {
+            var recipesDBFull = reciDB.map((recipe) => {
+                const { id, name, image, healthScore, sumarry, steps, diets } = recipe;
+
+                const recipeDiets = diets.map((diet) => diet.name).join(", ");
+                return { id, name, image, healthScore, sumarry, steps, diets: recipeDiets };
+            });
         }
 
-        const {data} = await axios(`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`);
+        const { data } = await axios(`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`);
 
         const apiRecipes = data.results.filter(coincidence => coincidence.title.toLowerCase().includes(name.toLowerCase())).map(recipe => { //las busca independientemente de mayúsculas o minúsculas.
             const instructions = recipe.analyzedInstructions && recipe.analyzedInstructions[0] ? recipe.analyzedInstructions[0].steps.map(step => step.step) : [];
             const diets = recipe.diets || recipe.Diets.map(diet => diet.name);
-            return {   
-              id: recipe.id,
-              name: recipe.title,
-              image: recipe.image,
-              summary: recipe.summary.replace(/<[^>]*>/g, ''),
-              healthScore: recipe.healthScore,
-              steps: instructions,
-              diets
-            }
-        });
-        
-        const dbRecipes = await Recipe.findAll({
-            attributes: ['id', 'name', 'image', 'summary', 'healthScore', 'steps'],
-            where: {name: {[Sequelize.Op.iLike]: `%${name}%`}},
-            include: {model: Diets, attributes: ['name']}
-        })
-        const dbRecipesAll = dbRecipes.map(recipe => {
-            const diets = recipe.diets || recipe.Diets.map(diet => diet.name);
             return {
-              id: recipe.id,
-              name: recipe.name,
-              image: recipe.image,
-              summary: recipe.summary,
-              healthScore: recipe.healthScore,
-              steps: recipe.steps,
-              diets
+                id: recipe.id,
+                name: recipe.title,
+                image: recipe.image,
+                summary: recipe.summary.replace(/<[^>]*>/g, ''),
+                healthScore: recipe.healthScore,
+                steps: instructions,
+                diets
             }
         });
-        
-        const allRecipes = apiRecipes.concat(dbRecipesAll);
-
-        if (allRecipes.length === 0) {
-            return res.status(400).send(`No hay recetas con el nombre: ${name}`) //Si no existe la receta, debe mostrar un mensaje adecuado.
-        }
-        
-        return res.status(200).json(allRecipes);
-        
+        let getDbByName = recipesDBFull.filter(e => e.name.toLowerCase().includes(name.toLowerCase()))
+        console.log("ESTO SALE:::", getDbByName)
+        res.status(200).json(apiRecipes.concat(getDbByName));
     } catch (error) {
-        
-        res.status(404).send(error.message)
-
+        console.error("Error in recipesName function:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
-
 }
 
-
-
-module.exports = RecipesName;
+module.exports = recipesName;
