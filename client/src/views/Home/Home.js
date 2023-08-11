@@ -5,8 +5,7 @@ import style from "./Home.module.css";
 import { useEffect, useState } from "react";
 import { Filter } from "../../components/Filtrer/Filtrer";
 import { Pagination } from "../../components/Pagination/Pagination";
-// import {buscarGame} from "../../redux/actions";
-import NavBar from '../../components/NavBar/NavBar';
+// import NavBar from '../../components/NavBar/NavBar';
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -49,16 +48,16 @@ export default function Home() {
   const [page, setPage] = useState(1);
   const [recipesPerPage] = useState(9);
 
-  let lastCardPerPage = page * recipesPerPage; //Se calcula el índice del último videojuego que se mostrará en la página actual multiplicando page por videogamesPerPage.
-  let firtsCardPerPage = lastCardPerPage - recipesPerPage; //  Se calcula el índice del primer videojuego que se mostrará en la página actual restando 
-  let currentPageGames = allRecipes.slice(firtsCardPerPage, lastCardPerPage);
+  let lastCardPerPage = page * recipesPerPage; //Se calcula el índice dela última receta que se mostrará en la página actual multiplicando page por recipesPerPage.
+  let firtsCardPerPage = lastCardPerPage - recipesPerPage; //  Se calcula el índice del primer recipes que se mostrará en la página actual restando 
+  let currentPageRecipes = allRecipes.slice(firtsCardPerPage, lastCardPerPage);
 
 
   return (
     <div className={style.backgro}>
       {/* <NavBar  /> */}
       <Filter paginate={paginate} />
-      <CardsContainer recipes={currentPageGames} />
+      <CardsContainer recipes={currentPageRecipes} />
       <Pagination
                 recipesPerPage={recipesPerPage}
                 totalRecipes={allRecipes.length}

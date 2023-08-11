@@ -9,14 +9,31 @@ const Recipesid = async (req, res) => {
 
     try {
 
-        let dbgame;
+        let dbRecipe;
 
         if (idRecipe.toString().includes("-")) {
-            dbgame = await Recipe.findByPk(
+            dbRecipe = await Recipe.findByPk(
                 idRecipe,
                 { include: { model: Diets, attributes: ['name'] }, }
-            )
-            res.status(200).json(dbgame)
+            ); if (!dbRecipe) {
+                res.status(404).json({ error: "Receta no encontrada" });
+                return;
+            }
+
+            // Mapeamos las dietas para obtener solo sus nombres
+            const diets = dbRecipe.Diets.map(diet => diet.name);
+
+            const associatedDiet = {
+                id: dbRecipe.id,
+                name: dbRecipe.name,
+                image: dbRecipe.image,
+                summary: dbRecipe.summary,
+                healthScore: dbRecipe.healthScore,
+                steps: dbRecipe.steps,
+                diets: diets,
+            };
+
+            res.status(200).json(associatedDiet);
         } else {
             const response = await axios.get(`${URL}/recipes/${idRecipe}/information?apiKey=${API_KEY}`);
             const filteredRecipe = response.data; // Actualiza aquí para obtener directamente los datos de la respuesta.
