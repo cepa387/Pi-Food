@@ -1,51 +1,75 @@
 require('dotenv').config();
 const axios = require("axios");
-const { API_KEY } = process.env;
+const { API_KEY, URL } = process.env;
 const { Recipe, Diets } = require('../db.js');
+const{Op} = require('sequelize')
 
-async function recipesName(req, res) {
+const recipesName = async (req, res) => {
+    
+    const { name } = req.query;
+
+    
     try {
-        const { name } = req.query;
-        console.log(`Esto sale ${name}`);
+        
+       const [recipesFromDatabase, apiResponse] = await Promise.all([
+            Recipe.findAll({
+                where:{
+                    name: {
+                        [Op.iLike]: `%${name}%`,
+                    },
+                },
+                include: Diets,
+            }),
+            axios.get(`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100`)
+       ]);
 
-        let reciDB = await Recipe.findAll({
-            include: {
-                model: Diets,
-                attributes: ['name'],
-                through: { attributes: [] }
-            }
-        });
+       const apiRecipes = apiResponse.data.results;
 
-        if (reciDB) {
-            var recipesDBFull = reciDB.map((recipe) => {
-                const { id, name, image, healthScore, sumarry, steps, diets } = recipe;
+       const propertyMapping = {
+        id: 'id',
+        name: 'title',
+        summary: 'summary',
+        healthScore: 'healthScore',
+        steps: 'steps',
+        image:'image',
+        diets: 'diets',
+       }
 
-                const recipeDiets = diets.map((diet) => diet.name).join(", ");
-                return { id, name, image, healthScore, sumarry, steps, diets: recipeDiets };
-            });
+
+       const propertyMappingDatabase = {
+        id: 'id',
+        name: 'name',
+        summary: 'summary',
+        healthScore: 'healthScore',
+        steps: 'steps',
+        image:'image',
+        diets: 'diets',
+       }
+
+       const filteredApiRecipes = apiRecipes.filter((recipe)=>
+       recipe.title.toLowerCase().includes(name.toLowerCase())
+       );
+
+       const combinedRecipes = [...recipesFromDatabase,...filteredApiRecipes];
+
+       const simplifiedRecipes = combinedRecipes.map((recipe)=>{
+            
+        const isFromDatabase = recipe instanceof Recipe;
+        const simplifiedRecipe = {};
+        const mapping = isFromDatabase ? propertyMappingDatabase : propertyMapping;
+
+        for (const key in mapping){
+            simplifiedRecipe[key] = recipe[mapping[key]];
         }
+        return simplifiedRecipe;
 
-        const { data } = await axios(`${URL}/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true`);
+       });
 
-        const apiRecipes = data.results.filter(coincidence => coincidence.title.toLowerCase().includes(name.toLowerCase())).map(recipe => { //las busca independientemente de mayúsculas o minúsculas.
-            const instructions = recipe.analyzedInstructions && recipe.analyzedInstructions[0] ? recipe.analyzedInstructions[0].steps.map(step => step.step) : [];
-            const diets = recipe.diets || recipe.Diets.map(diet => diet.name);
-            return {
-                id: recipe.id,
-                name: recipe.title,
-                image: recipe.image,
-                summary: recipe.summary.replace(/<[^>]*>/g, ''),
-                healthScore: recipe.healthScore,
-                steps: instructions,
-                diets
-            }
-        });
-        let getDbByName = recipesDBFull.filter(e => e.name.toLowerCase().includes(name.toLowerCase()))
-        console.log("ESTO SALE:::", getDbByName)
-        res.status(200).json(apiRecipes.concat(getDbByName));
+       return res.status(200).json(simplifiedRecipes);
+
     } catch (error) {
-        console.error("Error in recipesName function:", error);
-        res.status(500).json({ error: "Internal server error" });
+        console.error("Error ", error);
+        res.status(500).json({ error: "Error al obtener la receta" });
     }
 }
 

@@ -6,9 +6,10 @@ export const GET_DIETS = "GET_DIETS";
 export const GET_RECID = "GET_RECID";
 export const RESET = "RESET"
 export const FILTER_BY_DIETS = "FILTER_BY_DIETS"
-export const ORDER_ASC_RATING = "ORDER_ASC_RATING"
-export const ORDER_DESC_RATING = "ORDER_DESC_RATING"
+export const ORDER_ASC_HEALTH = "ORDER_ASC_HEALTH"
+export const ORDER_DESC_HEALTH = "ORDER_DESC_HEALTH"
 export const ORDER_BY_CREATOR = "ORDER_BY_CREATOR"
+export const GET_SEARCH = "GET_SEARCH"
 
 export const BusRecipes = () => {
     return async function (dispatch) {
@@ -40,10 +41,17 @@ export const getdiets = () => {
     export function idRecipe(id){
         return async function(dispatch){
             const response = await axios(`http://localhost:3001/recipes/${id}`)
-            //  console.log("RESPONSE:",response);
             return dispatch({ type:GET_RECID , payload: response.data })
         }
     };
+
+    export function buscarRecipe(name){
+      return async function(dispatch){
+          const response = await axios(`http://localhost:3001/recipes/name?name=${name}`)
+          return dispatch({type: GET_SEARCH, payload: response.data
+          })
+      }
+  }
 
     export const resetAll = (GET_RECIPES) => {
         return (dispatch) => {
@@ -55,23 +63,27 @@ export const getdiets = () => {
       };
 
       export const filterByDiets = (diets) => (dispatch, getState) => {
+        const allRecipes = getState().recipes; // Obtén todas las recetas del estado
+        
         let filteredRecipes = [];
       
         if (diets === "All") {
-            filteredRecipes = getState().recipes;
+            filteredRecipes = allRecipes; // Si se selecciona "All", muestra todas las recetas
         } else {
-            filteredRecipes = getState().recipes.filter((recipe) =>
-            (recipe.diets).includes(diets)
-          )
-        };
+            filteredRecipes = allRecipes.filter((recipe) =>
+                (recipe.diets || []).includes(diets) // Verifica si las dietas incluyen la dieta seleccionada
+            );
+        }
+        
         dispatch({
-          type: FILTER_BY_DIETS,
-          payload: {
-            diets,
-            recipeDiet: filteredRecipes,
-          },
+            type: FILTER_BY_DIETS,
+            payload: {
+                diets,
+                recipeDiet: filteredRecipes,
+            },
         });
-      };
+    };
+    
 
       export const orderAsc = (type) => (dispatch, getState) => {
         const filtered = getState().filteredRecipes;
@@ -83,13 +95,13 @@ export const getdiets = () => {
               if (a.name < b.name) return -1;
               return 0;
             });
-          } else if (type === "asc_rating") {
+          } else if (type === "asc_healthscore") {
             recipesOrder = filtered.sort(
-              (a, b) => a.rating - b.rating
+              (a, b) => a.rathealthScoreing - b.healthScore
             );
           }
           dispatch({
-            type: ORDER_ASC_RATING,
+            type: ORDER_ASC_HEALTH,
             payload: {
                 recipesOrder,
               name: type,
@@ -107,13 +119,13 @@ export const getdiets = () => {
               if (a.name > b.name) return -1;
               return 0;
             });
-          } else if (type === "desc_rating") {
+          } else if (type === "desc_healthscore") {
             recipesOrder = filtered.sort(
-              (a, b) => b.rating - a.rating
+              (a, b) => b.healthScore - a.healthScore
             );
           }
           dispatch({
-            type: ORDER_DESC_RATING,
+            type: ORDER_DESC_HEALTH,
             payload: {
                 recipesOrder,
               name: type,

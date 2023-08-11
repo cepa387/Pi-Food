@@ -7,9 +7,9 @@ export default function Create() {
 
     const dispatch = useDispatch();
     const diets = useSelector((store) => store.diets);
-    console.log("DIETAS:", diets)
+    
     const diets1 = diets && Array.isArray(diets) ? diets.slice(0, 10) : [];
-    console.log("DIETA 1:", diets1)
+    
 
     const [reci, setReci] = useState({
         name: "",
@@ -19,7 +19,7 @@ export default function Create() {
         steps: "",
         diets: [],
     });
-    // console.log("RECI",reci)
+
     useEffect(() => {
         dispatch(getdiets());
     }, []);

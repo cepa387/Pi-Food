@@ -8,24 +8,25 @@ export function Filter({paginate}) {
   const dispatch = useDispatch()
   const diets = useSelector((store) => store.diets);
 
+
   useEffect(() => {
     dispatch(getdiets());
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-
+  
   // Filtrado por genre
   //Cuando se selecciona una opción en el campo de filtrado por género. Dispatcha la acción 
   const handleFilter = (e) => {
     dispatch(filterByDiets(e.target.value))
     paginate(e, 1);
   };
+  
 
 
   // Ordenado
   const handleOrder = (e) => {
-    if (e.target.value === "asc_name" || e.target.value === "asc_rating") {
+    if (e.target.value === "asc_name" || e.target.value === "asc_healthscore") {
       dispatch(orderAsc(e.target.value));
-    } else if (e.target.value === "desc_name" || e.target.value === "desc_rating") {
+    } else if (e.target.value === "desc_name" || e.target.value === "desc_healthscore") {
       dispatch(orderDesc(e.target.value));
     } else {
       dispatch(filterByDiets(e.target.value));
@@ -55,20 +56,21 @@ export function Filter({paginate}) {
         <select onChange={(e) => handleFilter(e)}>
           <option default>All</option>
           {diets.map((G) => (
-            <option value={G.name}>{G.name}</option>
+            <option value={G.diet}>{G.diet}</option>
+            
           ))}
         </select>
       </div>
       <div>
       <br></br>
       <br></br>
-        <div> Ordenar Rati/Nomb</div>
+        <div> Ordenar health/Nomb</div>
         <select onChange={(e) => handleOrder(e)}>
           <option value="All" default>All</option>
           <option value="asc_name">Alphabetically (A-Z)</option>
           <option value="desc_name">Alphabetically (Z-A)</option>
-          <option value="asc_rating">Rating (Lower-Higher)</option>
-          <option value="desc_rating">Rating (Higher-Lower)</option>
+          <option value="asc_healthscore">healthscore (Lower-Higher)</option>
+          <option value="desc_healthscore">healthscore (Higher-Lower)</option>
         </select>
       </div>
       <div>
@@ -77,8 +79,8 @@ export function Filter({paginate}) {
         <div>Filtrar por Origen</div>
         <select onChange={(e) => handleCreator(e)} >
           <option default>All</option>
-          <option value="Api">Api videogames</option>
-          <option value="Created">User videogames</option>
+          <option value="Api">Api-Recipes</option>
+          <option value="Created">BD-Recipes</option>
         </select>
       </div>
     </div>

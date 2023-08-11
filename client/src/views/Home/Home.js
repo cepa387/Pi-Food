@@ -20,7 +20,7 @@ export default function Home() {
   //   function handleChange(e) {
   //     e.preventDefault();
   //     setBuscar(e.target.value);
-  // }
+  // }  
 
   // function handleSubmit(e) {
   //     e.preventDefault();

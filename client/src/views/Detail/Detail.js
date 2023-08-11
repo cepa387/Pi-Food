@@ -3,22 +3,21 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { idRecipe } from "../../redux/actions";
 // import NotFound from "../../components/notFound/notFound";
-// import style from "../Detail/Detail.module.css";
+import style from "../Detail/Detail.module.css";
 
 function RecipeDetail() {
     const { id } = useParams();
     const dispatch = useDispatch();
     const recipe = useSelector((state) => state.recipeid); //ojo !
     
-    console.log("ESTE ID::",id)
-    console.log("RECETAS:", recipe)
+
     useEffect(() => {
         dispatch(idRecipe(id));
     }, [dispatch, id]);
 
     return (
         <div >
-            <div >
+            <div className={style.card}>
                 <p><strong>Id:</strong>  {recipe.id}</p>
                 <p><strong>Nombre:</strong> {recipe.name}</p>
 

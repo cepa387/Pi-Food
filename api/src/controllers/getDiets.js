@@ -7,7 +7,7 @@ const getDiets = async (req, res) => {
   try {
     // Obtener todas las dietas de la base de datos
     const diets = await Diets.findAll();
-    console.log(diets)
+    
 
     // Si hay datos en la base de datos, mostrarlos
     if (diets.length > 0) {

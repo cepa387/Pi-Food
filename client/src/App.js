@@ -5,6 +5,7 @@ import Home from './views/Home/Home';
 import NavBar from './components/NavBar/NavBar';
 import Form from './views/Form/Form'
 import Detail from './views/Detail/Detail'
+import About from "../src/components/About/About";
 
 
 function App() {
@@ -28,6 +29,11 @@ function App() {
       <Route path="/detail/:id">
         <NavBar />
         <Detail />
+      </Route>
+
+      <Route path="/About">
+        <NavBar />
+        <About />
       </Route>
 
     </div>

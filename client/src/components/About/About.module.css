@@ -1,0 +1,76 @@
+.aboutContainer{
+    display: grid;
+    place-content: center;
+    margin-top: 10vh;
+  }
+  .about {
+      font-family: 'Roboto Mono', monospace;
+      grid-template-columns: repeat(1, 1fr);
+      column-count: 1;
+      column-gap:20% ;
+      display: grid;
+      max-width: 800px;
+      align-items: center;
+      justify-content: space-between;
+      background-color: rgb(137, 143, 163);
+      border-radius: 8px;
+      width: fit-content;
+      height: auto;
+      overflow: show;
+      border: 1px solid white;
+      padding:10px ;
+      color: white;
+    }
+  
+    .links{
+      text-decoration: none;
+      color: white;
+      background-color: rgba(5, 7, 12, 0.7);
+      border: 1px solid white;
+      padding: 5px;
+      padding-left: 10px;
+      padding-right: 10px;
+      border-radius: 15px;
+      transition: 0.2s;
+      margin: 10px;
+    }
+    .links:hover{
+      background-color:rgba(119, 119, 119, 0.7);
+      transform: scale(1.02);
+    }
+    .button{
+      font-family: 'Roboto Mono', monospace;
+      box-sizing: border-box;
+      font-size: 15px;
+      border:1px;
+      background:transparent;
+      height: 25px;
+      color:white;
+      position: relative;
+      padding: 0 10px 10px 10px;
+      margin-top: 15px;
+      margin-bottom: 10px;
+  }
+  .button:hover{
+      cursor: pointer;
+  }
+  .button::after{
+      content: "";
+      position: absolute;
+      background-color:rgb(255, 255, 255);
+      height: 3px;
+      width: 0;
+      left: 0;
+      bottom: -0.5px;
+      transition: 0.3s;
+   }
+   .button:hover:after {
+      width: 100%;
+  }
+  
+  .div{
+    margin: auto 0;
+    
+  
+  }
+  
