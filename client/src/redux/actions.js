@@ -97,9 +97,10 @@ export const getdiets = () => {
             });
           } else if (type === "asc_healthscore") {
             recipesOrder = filtered.sort(
-              (a, b) => a.rathealthScoreing - b.healthScore
+              (a, b) => a.healthScore - b.healthScore
             );
           }
+          console.log("FILTEREDDD:::",recipesOrder)
           dispatch({
             type: ORDER_ASC_HEALTH,
             payload: {

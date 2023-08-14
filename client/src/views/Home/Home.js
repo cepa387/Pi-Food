@@ -13,23 +13,15 @@ export default function Home() {
   const filteredRecipes = useSelector((state) => state.filteredRecipes);
   const filterBy = useSelector((state) => state.filterBy);
   const orderBy = useSelector((state) => state.orderBy);
+console.log("ORDENARBY::",orderBy);
+console.log("FILTERBY::",filterBy);
+console.log("FILTEREDRECIPES::",filteredRecipes);
 
-  // const [Buscar, setBuscar] = useState("");
-
-  //   function handleChange(e) {
-  //     e.preventDefault();
-  //     setBuscar(e.target.value);
-  // }  
-
-  // function handleSubmit(e) {
-  //     e.preventDefault();
-  //     dispatch(buscarGame(Buscar))
-  // }
 
   useEffect(() => {
     dispatch(resetAll());
     dispatch(BusRecipes());
-  }, [dispatch]);
+  }, []);
 
   // Filtrado y Ordenado
   let allRecipes;
@@ -39,6 +31,10 @@ export default function Home() {
 
 
   // Paginacion
+  const handlePageChange = (num) => {
+    setPage(num);
+  };
+
   function paginate(e, num) {
     e.preventDefault();
     setPage(num);
@@ -61,7 +57,8 @@ export default function Home() {
       <Pagination
                 recipesPerPage={recipesPerPage}
                 totalRecipes={allRecipes.length}
-                paginate={paginate}
+                currentPage={page}
+                paginate={handlePageChange}
             />
     </div>
   );

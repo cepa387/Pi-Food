@@ -14,7 +14,7 @@ export function Filter({paginate}) {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   
   // Filtrado por genre
-  //Cuando se selecciona una opción en el campo de filtrado por género. Dispatcha la acción 
+  //Cuando se selecciona una opción en el campo de filtrado por dieta. Dispatcha la acción 
   const handleFilter = (e) => {
     dispatch(filterByDiets(e.target.value))
     paginate(e, 1);
