@@ -5,7 +5,9 @@ import style from "./Home.module.css";
 import { useEffect, useState } from "react";
 import { Filter } from "../../components/Filtrer/Filtrer";
 import { Pagination } from "../../components/Pagination/Pagination";
-// import NavBar from '../../components/NavBar/NavBar';
+import NavBar from '../../components/NavBar/NavBar';
+
+
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -13,15 +15,12 @@ export default function Home() {
   const filteredRecipes = useSelector((state) => state.filteredRecipes);
   const filterBy = useSelector((state) => state.filterBy);
   const orderBy = useSelector((state) => state.orderBy);
-console.log("ORDENARBY::",orderBy);
-console.log("FILTERBY::",filterBy);
-console.log("FILTEREDRECIPES::",filteredRecipes);
 
 
   useEffect(() => {
     dispatch(resetAll());
     dispatch(BusRecipes());
-  }, []);
+  }, [dispatch]);
 
   // Filtrado y Ordenado
   let allRecipes;
@@ -42,6 +41,7 @@ console.log("FILTEREDRECIPES::",filteredRecipes);
 
 
   const [page, setPage] = useState(1);
+  
   const [recipesPerPage] = useState(9);
 
   let lastCardPerPage = page * recipesPerPage; //Se calcula el índice dela última receta que se mostrará en la página actual multiplicando page por recipesPerPage.
@@ -51,7 +51,7 @@ console.log("FILTEREDRECIPES::",filteredRecipes);
 
   return (
     <div className={style.backgro}>
-      {/* <NavBar  /> */}
+      <NavBar setPage = {setPage} />
       <Filter paginate={paginate} />
       <CardsContainer recipes={currentPageRecipes} />
       <Pagination

@@ -28,7 +28,7 @@ const rootReducer = (state = initialState, action) => {
     case GET_RECID:
       return { ...state, recipeid: action.payload };
     case GET_SEARCH:
-      return { ...state, recipes: action.payload };
+      return { ...state, recipes: action.payload ,currentPage:1 };
     case RESET:
       return {
         ...state,
@@ -36,12 +36,14 @@ const rootReducer = (state = initialState, action) => {
         filteredRecipes: [],
         orderBy: "Select",
         filterBy: "All",
+        currentPage:1,
       }
     case FILTER_BY_DIETS:
       return {
         ...state,
         filteredRecipes: action.payload.recipeDiet,
         filterBy: action.payload.diets,
+        currentPage:1,
       };
     case ORDER_ASC_HEALTH:
     case ORDER_DESC_HEALTH:

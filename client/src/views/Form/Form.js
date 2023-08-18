@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { postRecipes, getDiets, getdiets } from "../../redux/actions";
+import { postRecipes, getdiets } from "../../redux/actions";
 import style from "./Form.module.css";
+import Card from "../../components/Card/Card";
 
-export default function Create() {
+export default function Create({recipes}) {
   const dispatch = useDispatch();
   const diets = useSelector((store) => store.diets);
   const diets1 = diets && Array.isArray(diets) ? diets.slice(0, 10) : [];
@@ -26,15 +27,38 @@ export default function Create() {
     diets: "",
   });
 
+  const [isFormValid, setIsFormValid] = useState(false);
+
   useEffect(() => {
     dispatch(getdiets());
-  }, []);
+  }, [dispatch]);
+
+  useEffect(() => {
+    const isValid = Object.values(error).every((errorMsg) => errorMsg === "");
+    setIsFormValid(isValid);
+  }, [error]);
 
   const validateField = (name, value) => {
     if (!value) {
       setError((prevError) => ({ ...prevError, [name]: "Este campo es requerido" }));
     } else {
       setError((prevError) => ({ ...prevError, [name]: "" }));
+    }
+  };
+
+  const validateName = (name) => {
+    if (!name || name.length < 5 || name.length > 100 || /[^a-zA-Z0-9\s]/.test(name)) {
+      setError((prevError) => ({ ...prevError, name: "El nombre debe tener entre 5 y 100 caracteres y no contener caracteres especiales" }));
+    } else {
+      setError((prevError) => ({ ...prevError, name: "" }));
+    }
+  };
+
+  const validateSummary = (summary) => {
+    if (!summary || summary.length < 5 || summary.length > 500) {
+      setError((prevError) => ({ ...prevError, summary: "El resumen debe tener entre 5 y 500 caracteres" }));
+    } else {
+      setError((prevError) => ({ ...prevError, summary: "" }));
     }
   };
 
@@ -54,7 +78,13 @@ export default function Create() {
       });
     }
 
-    validateField(name, value);
+    if (name === "name") {
+      validateName(value);
+    } else if (name === "summary") {
+      validateSummary(value);
+    } else {
+      validateField(name, value);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -154,9 +184,11 @@ export default function Create() {
               </div>
             </div>
           </div>
-          <button type="submit">¡Crear!</button>
+          <button type="submit" disabled={!isFormValid}>¡Crear!</button>
         </div>
       </form>
+      {<Card data={reci} />}
     </div>
+    
   );
 }

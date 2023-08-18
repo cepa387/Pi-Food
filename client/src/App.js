@@ -8,6 +8,7 @@ import Detail from './views/Detail/Detail'
 import About from "../src/components/About/About";
 
 
+
 function App() {
   return (
     <div className="App">
@@ -17,12 +18,12 @@ function App() {
       </Route>
 
       <Route path="/home">
-        <NavBar />
         <Home />
       </Route>
 
       <Route path="/created">
-        <NavBar /><br /><br />
+        <NavBar />
+        <br /><br />
         <Form />
       </Route>
 

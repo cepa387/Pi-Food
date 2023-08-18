@@ -3,24 +3,26 @@ import { Link } from "react-router-dom/"
 import style from "./NavBar.module.css"
 import {useState } from "react";
 import { useDispatch} from "react-redux";
-import { BusRecipes, buscarRecipe } from "../../redux/actions";
+import { buscarRecipe } from "../../redux/actions";
 
 
-const NavBar = () => {
+const NavBar = ({setPage}) => {
 
     const dispatch = useDispatch();
     const[Buscar, setBuscar] = useState("");
 
     function handleChange(e){
-        e.preventDefault();
+        e.preventDefault(); 
         setBuscar(e.target.value);
     }
 
     function handleSubmit(e){
         e.preventDefault();
         dispatch(buscarRecipe(Buscar))
+        setPage(1);
         setBuscar('');
     }
+    
 
 
 
